@@ -15,7 +15,7 @@
 
     var ot = new ObjectTree()
 
-    var actual = ot.lookup('food.caramel.tastes.chocolate.smells.code', data)
+    var actual = ot.lookup('food.caramel.tastes.chocolate', data)
     console.log(actual) // 1.234
 
 ### string lookup, custom separator
@@ -30,9 +30,9 @@
       }
     }
 
-    var ot = new ObjectTree()
+    var ot = new ObjectTree({seperator: '::'})
 
-    var actual = ot.lookup('food.caramel.tastes.chocolate.smells.code', data)
+    var actual = ot.lookup('food::caramel::tastes::chocolate', data)
     console.log(actual) // 1.234
 
 
