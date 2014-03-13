@@ -89,3 +89,35 @@
 
     var actual = ot.lookup({'food':'caramel','tastes':'flower'}, data)
     console.log(actual) // 444
+
+### generate filters from the tree
+
+    var tree = {
+      the: {
+        barn: {
+          '*': 0,
+          is: {
+            free: 1
+          }
+        },
+        food: {
+          is: {
+            tasty: 2
+          }
+        }
+      }
+    }
+
+    var ot = new ObjectTree({wildcard: '*'})
+
+    var eventBus = ot.generateFilters(tree)
+
+    eventBus.on('filter', function(value, filter, attrList) {
+      will be called 3 times:
+      // value=0, filter={the: 'barn'}, attrList=['the', 'barn']
+      // value=1, filter={the: 'barn', is: 'free'}, attrList=['the', 'barn', 'is', 'free']
+      // value=2, filter={the: 'food', is: 'tasty'}, attrList=['the', 'food', 'is', 'tasty']
+    })
+    eventBus.on('end', function() {
+      // no more 'filter' events
+    })

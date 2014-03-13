@@ -1,4 +1,7 @@
+
+
 var _ = require('underscore')
+var EventEmitter = require('events').EventEmitter
 
 function ObjectTree(options) {
   this._options = options || {}
@@ -17,7 +20,45 @@ ObjectTree.prototype.lookup = function(filter, tree) {
   } else {
     return tree[filter]
   }
+}
 
+ObjectTree.prototype.generateFilters = function(tree) {
+  var eventBus = new EventEmitter()
+  var self = this
+  // some event listeners are synchronous. Just in case, defer the tree parsing so that the code has a chance to attach
+  // his event listeners
+  setImmediate(function() {
+    self._generateFiltersFromTree(eventBus, {}, [], tree)
+    eventBus.emit('end')
+  })
+  return eventBus
+}
+
+
+ObjectTree.prototype._generateFiltersFromTree = function(eventBus, filter, attrList, tree) {
+
+  for(var attr in tree) {
+    if(this._options.wildcard && attr === this._options.wildcard) {
+      eventBus.emit('filter', tree[attr], filter, attrList)
+    } else {
+      for(var attrValue in tree[attr]) {
+        var f = _.clone(filter)
+
+        var attrs = _.clone(attrList)
+        attrs.push(attr)
+        attrs.push(attrValue)
+
+        f[attr] = attrValue
+
+        if(_.isObject(tree[attr][attrValue])) {
+          this._generateFiltersFromTree(eventBus, f, attrs, tree[attr][attrValue])
+        } else {
+          eventBus.emit('filter', tree[attr][attrValue], f, attrs)
+        }
+      }
+    }
+
+  }
 }
 
 ObjectTree.prototype._resolveFromFilter = function(filter, tree, trace) {
