@@ -1,6 +1,10 @@
 
 [![Build Status](https://api.travis-ci.org/nherment/node-object-tree.png?branch=master)](https://travis-ci.org/nherment/node-object-tree)
 
+
+```npm install --save object-tree```
+
+
 ### string lookup
 
     var data = {
