@@ -5,6 +5,21 @@ var EventEmitter = require('events').EventEmitter
 
 function ObjectTree(options) {
   this._options = options || {}
+
+
+  var left = '{'
+  var right = '}'
+
+  if(this._options.template && this._options.template.left) {
+    left = this._options.template.left
+  }
+  if(this._options.template && this._options.template.right) {
+    right = this._options.template.right || '}'
+  }
+  this._templateRightLength = right.length
+  this._templateLeftLength = left.length
+  this._templateRegExp = new RegExp('^' + left + '.*' + right + '$', 'm')
+
 }
 
 ObjectTree.prototype.lookup = function(filter, tree) {
@@ -109,6 +124,18 @@ ObjectTree.prototype._resolveFromArray = function(array, tree, trace) {
 
   return tree
 
+}
+
+ObjectTree.prototype.lookupTemplate = function(template, tree) {
+
+  if(typeof template === 'string' && this._templateRegExp.test(template)) {
+
+    var reference = template.substring(this._templateLeftLength, template.length - this._templateRightLength)
+    return this.lookup(reference, tree)
+
+  } else {
+    return template
+  }
 }
 
 ObjectTree.prototype._hasWildcard = function(obj) {

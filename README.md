@@ -4,8 +4,9 @@
 
 ```npm install --save object-tree```
 
+# value lookup
 
-### string lookup
+### string
 
     var data = {
       food: {
@@ -22,7 +23,7 @@
     var actual = ot.lookup('food.caramel.tastes.chocolate', data)
     console.log(actual) // 1.234
 
-### string lookup, custom separator
+### string with custom separator
 
     var data = {
       food: {
@@ -40,7 +41,7 @@
     console.log(actual) // 1.234
 
 
-### array lookup
+### array
 
     var data = {
       food: {
@@ -57,7 +58,7 @@
     var actual = ot.lookup(['food','caramel','tastes','chocolate','smells','code'], data)
     console.log(actual) // 1.234
 
-### filter lookup
+### filter
 
     var data = {
       food: {
@@ -74,7 +75,7 @@
     var actual = ot.lookup({'food':'caramel','tastes':'chocolate'}, data)
     console.log(actual) // 1.234
 
-### filter lookup with wildcard
+### filter with wildcard
 
     var data = {
       food: {
@@ -93,6 +94,47 @@
 
     var actual = ot.lookup({'food':'caramel','tastes':'flower'}, data)
     console.log(actual) // 444
+
+### template only
+
+    var ot = new ObjectTree()
+
+    var actual = ot.lookupTemplate('{food.caramel.tastes.chocolate}', {
+        food: {
+          'caramel': {
+            tastes: {
+              'chocolate': 1.234
+            }
+          }
+        }
+      }
+    )
+
+    assert.equal(actual, 1.234)
+
+### template with custom delimiter
+
+    var ot = new ObjectTree({
+      template: {
+        left: '<',
+        right: '>'
+      }
+    })
+
+    var actual = ot.lookupTemplate('<food.caramel.tastes.chocolate>', {
+        food: {
+          'caramel': {
+            tastes: {
+              'chocolate': 1.234
+            }
+          }
+        }
+      }
+    )
+
+    assert.equal(actual, 1.234)
+
+# reverse lookup (generate a tree)
 
 ### generate filters from the tree
 
