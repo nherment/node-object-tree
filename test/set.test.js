@@ -50,5 +50,19 @@ describe('set value', function() {
 
   })
 
+  it('replace nested value (obj)', function() {
+
+    var obj = {attr1: false, attr2: {nestedA: true}}
+
+    var now = Date.now()
+    var ot = new ObjectTree()
+    assert.ok(ot.set('attr2.nested1.nested2', now, obj))
+
+    assert.equal(obj.attr1, false)
+    assert.equal(obj.attr2.nested1.nested2, now)
+    assert.equal(obj.attr2.nestedA, true)
+
+  })
+
 
 })

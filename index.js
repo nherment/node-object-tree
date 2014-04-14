@@ -148,10 +148,12 @@ ObjectTree.prototype.set = function(attr, value, tree) {
         tree[nestedAttrs[i]] = value
         modified = true
       }
-    } else if(!_.isObject(tree.hasOwnProperty(nestedAttrs[i]))) {
+    } else if(!tree.hasOwnProperty(nestedAttrs[i]) || !_.isObject(tree[nestedAttrs[i]])) {
       tree[nestedAttrs[i]] = {}
       tree = tree[nestedAttrs[i]]
       modified = true
+    } else {
+      tree = tree[nestedAttrs[i]]
     }
   }
   return modified
