@@ -167,3 +167,11 @@
     eventBus.on('end', function() {
       // no more 'filter' events
     })
+
+# set value
+
+    var obj = {attr1: false, attr2: true}
+
+    ot.set('attr2.nested1.nested2', Date.now(), obj)) // true
+
+set returns true if the object was modified

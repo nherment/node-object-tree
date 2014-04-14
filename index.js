@@ -138,6 +138,25 @@ ObjectTree.prototype.lookupTemplate = function(template, tree) {
   }
 }
 
+ObjectTree.prototype.set = function(attr, value, tree) {
+  var separator = this._options.separator || '.'
+  var nestedAttrs = attr.split(separator)
+  var modified = false
+  for(var i = 0 ; i < nestedAttrs.length ; i++) {
+    if(i === (nestedAttrs.length -1)) {
+      if(tree[nestedAttrs[i]] !== value) {
+        tree[nestedAttrs[i]] = value
+        modified = true
+      }
+    } else if(!_.isObject(tree.hasOwnProperty(nestedAttrs[i]))) {
+      tree[nestedAttrs[i]] = {}
+      tree = tree[nestedAttrs[i]]
+      modified = true
+    }
+  }
+  return modified
+}
+
 ObjectTree.prototype._hasWildcard = function(obj) {
   return this._options.hasOwnProperty('wildcard') && obj && obj.hasOwnProperty(this._options.wildcard)
 }
