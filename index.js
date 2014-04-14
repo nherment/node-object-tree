@@ -128,7 +128,7 @@ ObjectTree.prototype._resolveFromArray = function(array, tree, trace) {
 
 ObjectTree.prototype.lookupTemplate = function(template, tree) {
 
-  if(typeof template === 'string' && this._templateRegExp.test(template)) {
+  if(typeof template === 'string' && this.isTemplate(template)) {
 
     var reference = template.substring(this._templateLeftLength, template.length - this._templateRightLength)
     return this.lookup(reference, tree)
@@ -136,6 +136,10 @@ ObjectTree.prototype.lookupTemplate = function(template, tree) {
   } else {
     return template
   }
+}
+
+ObjectTree.prototype.isTemplate = function(template) {
+  return this._templateRegExp.test(template)
 }
 
 ObjectTree.prototype.set = function(attr, value, tree) {
