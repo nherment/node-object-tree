@@ -1,6 +1,6 @@
 
 
-var _ = require('underscore')
+var _ = require('lodash')
 var EventEmitter = require('events').EventEmitter
 
 function ObjectTree(options) {

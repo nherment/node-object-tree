@@ -1,6 +1,6 @@
 {
   "name": "object-tree",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "lookup js objects values from a flat structure",
   "main": "index.js",
   "scripts": {
@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/nherment/node-object-tree",
   "dependencies": {
-    "underscore": "^1.6.0"
+    "lodash": "2.4.1"
   },
   "devDependencies": {
-    "mocha": "^1.17.1"
+    "mocha": "1.17.1"
   }
 }
